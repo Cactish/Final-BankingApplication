@@ -6,11 +6,16 @@
  */
 package bankingapplication.views;
 
-import javax.swing.*;
+import edu.neumont.helpers.Console;
 
 public class BankingUI
 {
-    public void displayLoginWindow() {
-
+    public static int displayMainMenu() {
+        return Console.getIntInput("""
+                                           Banking Manager:
+                                           1. Login
+                                           2. Create Account
+                                           3. Exit
+                                           """, 1, 3, Console.TextColor.YELLOW);
     }
 }

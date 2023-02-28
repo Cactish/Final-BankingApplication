@@ -6,6 +6,7 @@
  */
 package bankingapplication.models;
 
+import java.util.List;
 import java.util.Random;
 
 public class User
@@ -14,14 +15,13 @@ public class User
 
     private String userName;
     private String password;
-    private double balance;
+    private List<BankAccount> accounts;
 
     private Random random = new Random();
 
-    public User(String userName, String password, double balance) {
+    public User(String userName, String password){
         setUserName(userName);
         setPassword(password);
-        setBalance(balance);
     }
 
     public String getUserName() {
@@ -37,42 +37,13 @@ public class User
     }
 
     public void setPassword(String password) {
-        if(password == null || password.isBlank() || password.length() >= 10){
-            System.out.println("Invalid password, create random password?");
-            boolean randomPassword = true; // Have user be prompted if they want to create a random password
-            if(randomPassword = true){
-                this.password = getStrongPassword(MAX_PASSWORD, true);
-                System.out.println(password); //Have jframe show them the password for them to copy
-            }else{
-                this.password = password;
-            }
+        if (password == null || password.isBlank() || password.length() > MAX_PASSWORD) {
+            throw new IllegalArgumentException("NO"); //Going to change this later, maybe
         }
+        this.password = password;
     }
-    public double getBalance(){
-        return balance;
-    }
-    public void setBalance(Double balance){
-        if(balance == 0 || balance < 0){
-            System.out.println("Invalid Balance"); //JFRAME
-            return;
-        }
-        this.balance = balance;
-    }
-    public static String getStrongPassword(int length, boolean includeSymbols) {
-        Random random = new Random();
-        if (length == 0) {
-            throw new IllegalArgumentException("Length cannot be 0");
-        }
 
-        String charsToChooseFrom = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        if (includeSymbols) {
-            charsToChooseFrom += "!#$%&<>@";
-        }
-
-        StringBuilder password = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            password.append(charsToChooseFrom.charAt(random.nextInt(charsToChooseFrom.length())));
-        }
-        return password.toString();
+    public String toString(){
+        return userName + "\r\n" + password;
     }
 }
