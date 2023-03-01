@@ -1,6 +1,6 @@
 package bankingapplication.models;
 
-public class CheckingsAccount
+public class CheckingAccount
 {
 
 }
