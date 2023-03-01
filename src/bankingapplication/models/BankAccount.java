@@ -17,4 +17,8 @@ public abstract class BankAccount
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
+    public void deposit() {
+
+    }
 }
