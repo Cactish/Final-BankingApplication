@@ -9,6 +9,7 @@ package bankingapplication.controllers;
 import bankingapplication.models.User;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +87,8 @@ public class FileManager
     public List<User> readAccounts() {
         List<User> accounts = new ArrayList<>();
         for (String fileName : getAllFilesInFolder()) {
-            accounts.add(new User(fileName, readData(fileName)));
+            String[] account = readData(fileName.replace(".txt", "")).split("\r\n");
+            accounts.add(new User(account[0], account[1]));
         }
         return accounts;
     }

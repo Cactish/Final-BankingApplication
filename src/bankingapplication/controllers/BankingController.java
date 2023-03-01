@@ -20,19 +20,40 @@ public class BankingController
     private List<User> accounts = new ArrayList<>();
 
     private boolean currentlyRunning = true;
-
+    //login to an existing account
     private void loginToAccount() {
         String[] loginInfo = BankingUI.displayLoginMenu();
-
+        for (int i = 0; i < accounts.size(); i++) {
+            if(accounts.get(i).getUserName().toLowerCase().equals(loginInfo[0]) && accounts.get(i).getPassword().equals(loginInfo[1])) {
+                bankApp(accounts.get(i));
+            }
+        }
+        Console.writeLn("Username or Password is Incorrect, Please Try Again", Console.TextColor.RED);
+        loginToAccount();
     }
     
     // region Create New Account
     private void registerAccount() {
-
+        String[] registerInfo = BankingUI.displayRegisterMenu();
+        accounts.add(new User(registerInfo[0], registerInfo[1]));
+        fileManager.writeData(accounts.get(accounts.size()-1).getUserName(), accounts.get(accounts.size()-1).toString(), false);
+        boolean loginConfirm = Console.getBooleanInput("Account Created, Login?(yes, no)", "yes", "no", Console.TextColor.YELLOW);
+        if(loginConfirm == true){
+            loginToAccount();
+        }else{
+            mainMenu();
+        }
     }
     // endregion
     private void bankApp(User account){
-      //THE THINGY
+        int input = BankingUI.mainBank(account);
+        switch (input){
+            case 1 -> mainMenu();
+            case 2 -> mainMenu();
+            case 3 -> mainMenu();
+            case 4 -> mainMenu();
+            case 5 -> mainMenu();
+        }
     }
 
     /**
