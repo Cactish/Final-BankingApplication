@@ -18,4 +18,15 @@ public class BankingUI
                                            3. Exit
                                            """, 1, 3, Console.TextColor.YELLOW);
     }
+    public static String[] displayLoginMenu(){
+        String username = Console.getStringInput("Username: ", false, Console.TextColor.YELLOW);
+        String password = Console.getStringInput("Password: ", false, Console.TextColor.YELLOW);
+        return new String[]{username, password};
+    }
+
+    public static String[] displayRegisterMenu() {
+        String username = Console.getStringInput("Create a username: ", false, Console.TextColor.YELLOW);
+        String password = Console.getStringInput("Create a password: ", false, Console.TextColor.YELLOW);
+        return new String[]{username, password};
+    }
 }

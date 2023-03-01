@@ -29,6 +29,9 @@ public class User
     }
 
     public void setUserName(String userName) {
+        if(userName == null || userName.isBlank()){
+            throw new IllegalArgumentException("'userName' cannot be null or blank");
+        }
         this.userName = userName;
     }
 
