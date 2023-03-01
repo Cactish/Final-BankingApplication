@@ -12,7 +12,6 @@ import edu.neumont.helpers.Console;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class BankingController
 {
@@ -24,6 +23,7 @@ public class BankingController
     private void loginToAccount() {
         String[] loginInfo = BankingUI.displayLoginMenu();
         for (int i = 0; i < accounts.size(); i++) {
+            System.out.println(accounts.get(i));
             if(accounts.get(i).getUserName().toLowerCase().equals(loginInfo[0]) && accounts.get(i).getPassword().equals(loginInfo[1])) {
                 bankApp(accounts.get(i));
             }
@@ -31,8 +31,7 @@ public class BankingController
         Console.writeLn("Username or Password is Incorrect, Please Try Again", Console.TextColor.RED);
         loginToAccount();
     }
-    
-    // region Create New Account
+
     private void registerAccount() {
         String[] registerInfo = BankingUI.displayRegisterMenu();
         accounts.add(new User(registerInfo[0], registerInfo[1]));
@@ -44,7 +43,7 @@ public class BankingController
             mainMenu();
         }
     }
-    // endregion
+
     private void bankApp(User account){
         int input = BankingUI.mainBank(account);
         switch (input){
