@@ -6,6 +6,8 @@
  */
 package bankingapplication.models;
 
+import bankingapplication.models.accounts.BankAccount;
+
 import java.util.List;
 import java.util.Random;
 

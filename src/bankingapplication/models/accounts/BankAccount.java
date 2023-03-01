@@ -1,38 +1,50 @@
+package bankingapplication.models.accounts;
 /**
- * @author rratajczak
- * @createdOn 2/28/2023 at 11:35 AM
- * @projectName Final-BankingApplication
- * @packageName bankingapplication.models;
+ * <p>Simulated bank account</p>
+ * Has a name and balance and allows Users to view, deposit, withdraw, and transfer from the balance
+ * @author Ryan Ratajczak
  */
-package bankingapplication.models;
-
 public abstract class BankAccount
 {
+    private String name;
     private double balance;
+
+    public String getName() {
+        return name;
+    }
+
+    protected void setName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("'name' cannot be null or blank");
+        }
+        this.name = name;
+    }
 
     public double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    private void setBalance(double balance) {
         this.balance = balance;
     }
 
-    public void deposit(double amount) {
+    public String deposit(double amount) {
         if (amount >= 0) {
             throw new IllegalArgumentException("'amount' cannot be less than or equal to 0");
         }
         setBalance(getBalance() + amount);
+        return "+ $" + amount;
     }
 
-    public void withdraw(double amount) {
+    public String withdraw(double amount) {
         if (amount > getBalance() || amount <= 0) {
             throw new IllegalArgumentException("'amount' cannot be greater than balance or less than or equal to zero");
         }
         setBalance(getBalance() - amount);
+        return "- $" + amount;
     }
 
-    public void transfer(BankAccount sender, BankAccount receiver, double amount) {
+    public String transfer(BankAccount sender, BankAccount receiver, double amount) {
         if (sender == null || receiver == null) {
             throw new IllegalArgumentException("Either BankAccount cannot be null");
         }
@@ -41,5 +53,6 @@ public abstract class BankAccount
         }
         sender.withdraw(amount);
         receiver.deposit(amount);
+        return sender.name + "->" + receiver.name;
     }
 }
