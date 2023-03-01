@@ -6,16 +6,19 @@
  */
 package bankingapplication.controllers;
 
+import bankingapplication.models.User;
+
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class FileManager
 {
-    public final static String ROOT_FOLDER = "C:\\Accounts";
+    public final static String ROOT_FOLDER = "C:\\Accounts\\";
 
     private String getFullFilePath(String fileName) {
-        return ROOT_FOLDER + "\\" + fileName + ".txt";
+        return ROOT_FOLDER + fileName + ".txt";
     }
 
     private void createRootFolder() {
@@ -23,6 +26,17 @@ public class FileManager
         if (!rootFolder.exists()) {
             try {
                 rootFolder.mkdir();
+            } catch (SecurityException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public void createAccountFolder(String accountName) {
+        File accountFolder = new File(ROOT_FOLDER + accountName);
+        if(!accountFolder.exists()) {
+            try {
+                accountFolder.mkdir();
             } catch (SecurityException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -66,16 +80,26 @@ public class FileManager
         return content.toString();
     }
 
+    /**
+     * Reads all the files in "C:/accounts" and creates a new User object that is then added to accounts array
+     */
+    public List<User> readAccounts() {
+        List<User> accounts = new ArrayList<>();
+        for (String fileName : getAllFilesInFolder()) {
+            accounts.add(new User(fileName, readData(fileName)));
+        }
+        return accounts;
+    }
+
     public List<String> getAllFilesInFolder() {
         createRootFolder();
         File rootFolder = new File(ROOT_FOLDER);
         List<String> files = Arrays.asList(rootFolder.list());
         for (int i = 0; i < files.size(); i++) {
             String fileName = files.get(i);
-            fileName = fileName.substring(0, fileName.lastIndexOf("."));
+
             files.set(i, fileName);
         }
         return files;
     }
-
 }

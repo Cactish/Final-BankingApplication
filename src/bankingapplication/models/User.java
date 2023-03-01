@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class User
 {
-    private final int MAX_PASSWORD = 10;
+    public final int MIN_PASSWORD = 10;
 
     private String userName;
     private String password;
@@ -37,10 +37,36 @@ public class User
     }
 
     public void setPassword(String password) {
-        if (password == null || password.isBlank() || password.length() > MAX_PASSWORD) {
-            throw new IllegalArgumentException("NO"); //Going to change this later, maybe
+        if (password == null || password.isBlank() || password.length() < MIN_PASSWORD) {
+            throw new IllegalArgumentException("'password' cannot be null, blank, or below " + MIN_PASSWORD + "Characters");
         }
         this.password = password;
+    }
+
+    public void createAccount() {
+
+    }
+
+    /**
+     * Generates a strong password that fulfils password requirements
+     * @return Generated password
+     */
+    public static String getStrongPassword(int length, boolean includeSymbols) {
+        Random random = new Random();
+        if (length == 0) {
+            throw new IllegalArgumentException("Length cannot be 0");
+        }
+
+        String charsToChooseFrom = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        if (includeSymbols) {
+            charsToChooseFrom += "!#$%&<>@";
+        }
+
+        StringBuilder password = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            password.append(charsToChooseFrom.charAt(random.nextInt(charsToChooseFrom.length())));
+        }
+        return password.toString();
     }
 
     public String toString(){
