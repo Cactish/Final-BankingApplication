@@ -18,7 +18,7 @@ import java.util.List;
 
 public class FileManager
 {
-    public final static String ROOT_FOLDER = "C:\\Accounts\\";
+    public final static String ROOT_FOLDER = "C:\\BankingApplication\\";
 
     private void createRootFolder() {
         File rootFolder = new File(ROOT_FOLDER);
