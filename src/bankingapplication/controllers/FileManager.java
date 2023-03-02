@@ -117,7 +117,7 @@ public class FileManager
             }
             if (file.charAt(0) == 'S') {
                 String[] accountInfo = readData(path).split("\r\n");
-                accounts.add(new SavingsAccount(accountInfo[0], Double.parseDouble(accountInfo[1])));
+                accounts.add(new SavingsAccount(accountInfo[0], Double.parseDouble(accountInfo[1]), Integer.parseInt(accountInfo[3])));
             }
         }
         for (BankAccount account : accounts) {
@@ -135,6 +135,27 @@ public class FileManager
                 userFolder.mkdir();
             } catch (SecurityException ex) {
                 System.out.println(ex.getMessage());
+            }
+        }
+        String content;
+        content = user.getUserName() + "\n" + user.getPassword();
+        writeData(path + "Login.txt", content, false);
+        for (BankAccount account : user.getAccounts()) {
+            if (account.getClass().getSimpleName().equals("CheckingAccount")) {
+                content = account.getName() + "\n" +
+                        account.getBalance() + "\n";
+                for (String transaction : account.getTransactions()) {
+                    content += transaction;
+                }
+                writeData(path + "Checking" + account.getName() + ".txt", content, false);
+            } else {
+                content = account.getName() + "\n" + account.getBalance() + "\n" +
+                        account.getInterestRate() + "\n" + account.getWithdrawals() + "\n" +
+                        account.isWithdrawalsReset();
+                for (String transaction : account.getTransactions()) {
+                    content += transaction;
+                }
+                writeData(path + "Savings" + account.getName() + ".txt", content, false);
             }
         }
     }

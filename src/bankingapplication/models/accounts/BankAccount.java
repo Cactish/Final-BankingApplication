@@ -12,6 +12,9 @@ public abstract class BankAccount
 {
     private String name;
     private double balance;
+    private double interestRate;
+    private int withdrawals = 6;
+    private boolean withdrawalsReset = false;
     private List<String> transactions = new ArrayList<>();
 
     public String getName() {
@@ -31,6 +34,30 @@ public abstract class BankAccount
 
     protected void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public int getWithdrawals() {
+        return withdrawals;
+    }
+
+    public void setWithdrawals(int withdrawals) {
+        this.withdrawals = withdrawals;
+    }
+
+    public boolean isWithdrawalsReset() {
+        return withdrawalsReset;
+    }
+
+    public void setWithdrawalsReset(boolean withdrawalsReset) {
+        this.withdrawalsReset = withdrawalsReset;
     }
 
     public List<String> getTransactions() {

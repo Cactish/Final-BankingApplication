@@ -7,6 +7,8 @@
 package bankingapplication.controllers;
 
 import bankingapplication.models.User;
+import bankingapplication.models.accounts.CheckingAccount;
+import bankingapplication.models.accounts.SavingsAccount;
 import bankingapplication.views.BankingUI;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class BankingController
             for (String userFolder : fileManager.getAllFilesInFolder()) {
                 users.add(fileManager.createUserFromUserFolder(userFolder));
             }
+            System.out.println(users);
             int response = BankingUI.displayMainMenu();
             switch (response) {
                 case 1 -> loginToAccount();

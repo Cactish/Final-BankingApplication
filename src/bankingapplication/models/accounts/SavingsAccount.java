@@ -10,10 +10,6 @@ public class SavingsAccount extends BankAccount
     public final double INTEREST_RATE = 1.5;
     public final int MAX_WITHDRAWALS = 6;
 
-    private double interestRate;
-    private int withdrawals = 6;
-    private boolean withdrawalsReset = false;
-
     public SavingsAccount(String name, double deposit) {
         setName(name);
         setBalance(deposit);
@@ -27,30 +23,6 @@ public class SavingsAccount extends BankAccount
         setBalance(balance);
         setInterestRate(INTEREST_RATE);
         setWithdrawals(withdrawals);
-    }
-
-    public double getInterestRate() {
-        return interestRate;
-    }
-
-    public void setInterestRate(double interestRate) {
-        this.interestRate = interestRate;
-    }
-
-    public int getWithdrawals() {
-        return withdrawals;
-    }
-
-    public void setWithdrawals(int withdrawals) {
-        this.withdrawals = withdrawals;
-    }
-
-    public boolean isWithdrawalsReset() {
-        return withdrawalsReset;
-    }
-
-    public void setWithdrawalsReset(boolean withdrawalsReset) {
-        this.withdrawalsReset = withdrawalsReset;
     }
 
     @Override
