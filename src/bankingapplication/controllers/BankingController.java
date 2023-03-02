@@ -49,10 +49,9 @@ public class BankingController
      */
     public void run() {
         do {
-            if(users.size() != fileManager.getAllFilesInFolder().size()) // add this
-                for (String userFolder : fileManager.getAllFilesInFolder()) {
-                    users.add(fileManager.createUserFromUserFolder(userFolder));
-                }
+            for (String userFolder : fileManager.getAllFilesInFolder()) {
+                users.add(fileManager.createUserFromUserFolder(userFolder));
+            }
             int response = BankingUI.displayMainMenu();
             switch (response) {
                 case 1 -> loginToAccount();
