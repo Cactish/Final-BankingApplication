@@ -1,5 +1,6 @@
 package bankingapplication.models.accounts;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,11 +65,11 @@ public abstract class BankAccount
         return transactions;
     }
 
-    private void addTransaction(String transaction) {
+    public void addTransaction(String transaction) {
         if (transaction == null || transaction.isBlank()) {
             throw new IllegalArgumentException("'transaction' message cannot be null or blank");
         }
-        this.transactions.add(transaction);
+        this.transactions.add(transaction + " | " + LocalDate.now() + " |");
     }
 
     public void deposit(double amount) {
@@ -76,7 +77,17 @@ public abstract class BankAccount
             throw new IllegalArgumentException("'amount' cannot be less than or equal to 0");
         }
         setBalance(getBalance() + amount);
-        addTransaction("+ $" + amount);
+        addTransaction("| + $" + amount + " | DEPOSIT");
+    }
+
+    public void deposit(double amount, boolean silent) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("'amount' cannot be less than or equal to 0");
+        }
+        setBalance(getBalance() + amount);
+        if (!silent) {
+            addTransaction("| + $" + amount + " | DEPOSIT");
+        }
     }
 
     public void withdraw(double amount) {
@@ -84,18 +95,16 @@ public abstract class BankAccount
             throw new IllegalArgumentException("'amount' cannot be greater than balance or less than or equal to zero");
         }
         setBalance(getBalance() - amount);
-        addTransaction("- $" + amount);
+        addTransaction("| + $" + amount + " | WITHDRAW");
     }
 
-    public void transfer(BankAccount sender, BankAccount receiver, double amount) {
-        if (sender == null || receiver == null) {
-            throw new IllegalArgumentException("Either BankAccount cannot be null");
+    public void withdraw(double amount, boolean silent) {
+        if (amount > getBalance() || amount <= 0) {
+            throw new IllegalArgumentException("'amount' cannot be greater than balance or less than or equal to zero");
         }
-        if (amount > sender.getBalance()) {
-            throw new IllegalArgumentException("'amount' cannot be greater than sender's current balance");
+        setBalance(getBalance() - amount);
+        if (!silent) {
+            addTransaction("| + $" + amount + " | WITHDRAW");
         }
-        sender.withdraw(amount);
-        receiver.deposit(amount);
-        addTransaction(sender.name + "->" + receiver.name);
     }
 }
