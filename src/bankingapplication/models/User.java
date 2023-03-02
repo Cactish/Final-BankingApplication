@@ -77,7 +77,7 @@ public class User
 
     public String toString() {
         String returnString = "";
-        returnString += userName + "\r\n" + password;
+        returnString += userName + "\n" + password + "\n";
         for (BankAccount account : accounts) {
             returnString += account.toString();
         }

@@ -113,6 +113,7 @@ public class FileManager
         String[] files = userFolder.list();
 
         // Iterate through files in the User's folder
+        assert files != null;
         for (String file : files) {
             String path = userFolder + "\\" + file;
             if (file.equals("Login.txt")) {
@@ -130,6 +131,7 @@ public class FileManager
             }
         }
         for (BankAccount account : accounts) {
+            assert user != null;
             user.openAccount(account);
         }
         return user;

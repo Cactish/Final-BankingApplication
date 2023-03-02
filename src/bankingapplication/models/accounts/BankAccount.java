@@ -29,7 +29,7 @@ public abstract class BankAccount
         return balance;
     }
 
-    private void setBalance(double balance) {
+    protected void setBalance(double balance) {
         this.balance = balance;
     }
 
@@ -37,30 +37,30 @@ public abstract class BankAccount
         return transactions;
     }
 
-    public void addTransaction(String transaction) {
+    private void addTransaction(String transaction) {
         if (transaction == null || transaction.isBlank()) {
             throw new IllegalArgumentException("'transaction' message cannot be null or blank");
         }
         this.transactions.add(transaction);
     }
 
-    public String deposit(double amount) {
+    public void deposit(double amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("'amount' cannot be less than or equal to 0");
         }
         setBalance(getBalance() + amount);
-        return "+ $" + amount;
+        addTransaction("+ $" + amount);
     }
 
-    public String withdraw(double amount) {
+    public void withdraw(double amount) {
         if (amount > getBalance() || amount <= 0) {
             throw new IllegalArgumentException("'amount' cannot be greater than balance or less than or equal to zero");
         }
         setBalance(getBalance() - amount);
-        return "- $" + amount;
+        addTransaction("- $" + amount);
     }
 
-    public String transfer(BankAccount sender, BankAccount receiver, double amount) {
+    public void transfer(BankAccount sender, BankAccount receiver, double amount) {
         if (sender == null || receiver == null) {
             throw new IllegalArgumentException("Either BankAccount cannot be null");
         }
@@ -69,6 +69,6 @@ public abstract class BankAccount
         }
         sender.withdraw(amount);
         receiver.deposit(amount);
-        return sender.name + "->" + receiver.name;
+        addTransaction(sender.name + "->" + receiver.name);
     }
 }
