@@ -27,26 +27,19 @@ public class BankingController
                 bankApp(users.get(i));
             }
         }
-        Console.writeLn("Username or Password is Incorrect, Please Try Again", Console.TextColor.RED);
-        loginToAccount();
+            Console.writeLn("Username or Password is Incorrect, Please Try Again", Console.TextColor.RED);
     }
     private void registerAccount() {
-        String[] registerInfo = BankingUI.displayRegisterMenu();
-        users.add(new User(registerInfo[0], registerInfo[1]));
-        fileManager.writeData(users.get(users.size()-1).getUserName(), users.get(users.size()-1).toString(), false);
-        boolean loginConfirm = Console.getBooleanInput("Account Created, Login?(yes, no)", "yes", "no", Console.TextColor.YELLOW);
-        if(loginConfirm == true){
-            loginToAccount();
-        }
+
     }
 
     private void bankApp(User user){
         int input = BankingUI.mainBank(user);
         switch (input){
-            case 1 -> mainMenu();
-            case 2 -> mainMenu();
-            case 3 -> mainMenu();
-            case 4 -> mainMenu();
+            case 1 -> run();
+            case 2 -> run();
+            case 3 -> run();
+            case 4 -> run();
             case 5 -> run();
         }
     }
@@ -56,9 +49,10 @@ public class BankingController
      */
     public void run() {
         do {
-            for (String userFolder : fileManager.getAllFilesInFolder()) {
-                users.add(fileManager.createUserFromUserFolder(userFolder));
-            }
+            if(users.size() != fileManager.getAllFilesInFolder().size()) // add this
+                for (String userFolder : fileManager.getAllFilesInFolder()) {
+                    users.add(fileManager.createUserFromUserFolder(userFolder));
+                }
             int response = BankingUI.displayMainMenu();
             switch (response) {
                 case 1 -> loginToAccount();
