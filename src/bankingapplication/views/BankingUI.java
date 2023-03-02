@@ -27,7 +27,7 @@ public class BankingUI
                 3. Open Account
                 4. Close Account
                 5. Back to Menu
-                """, Console.TextColor.YELLOW);
+                """, 1, 5, Console.TextColor.YELLOW);
     }
     public static String[] displayLoginMenu(){
         String username = Console.getStringInput("Username: ", false, Console.TextColor.YELLOW);
@@ -43,8 +43,13 @@ public class BankingUI
             password = User.getStrongPassword();
             Console.writeLn("Your password is: " + password , Console.TextColor.RED);
         }else {
-            password = Console.getStringInput("Create a password: ", false, Console.TextColor.YELLOW);
+            do{
+                password = Console.getStringInput("Enter Password: ", false, Console.TextColor.YELLOW);
+            }while(password.length() < 10);
         }
         return new String[]{username, password};
+    }
+    public static String openAccount(){
+        return Console.getStringInput("What is the name of the Account?", false, Console.TextColor.YELLOW);
     }
 }

@@ -7,6 +7,8 @@
 package bankingapplication.controllers;
 
 import bankingapplication.models.User;
+import bankingapplication.models.accounts.BankAccount;
+import bankingapplication.models.accounts.CheckingAccount;
 import bankingapplication.views.BankingUI;
 import edu.neumont.helpers.Console;
 
@@ -30,18 +32,52 @@ public class BankingController
             Console.writeLn("Username or Password is Incorrect, Please Try Again", Console.TextColor.RED);
     }
     private void registerAccount() {
-
+        String[] registerInfo = BankingUI.displayRegisterMenu();
+        for (int i = 0; i < users.size(); i++) {
+            if(users.get(i).getUserName().toLowerCase().equals(registerInfo[0].toLowerCase())){
+                Console.writeLn("Username is already taken, Please try again", Console.TextColor.RED);
+                registerAccount();
+            }
+        }
+        User user = new User(registerInfo[0], registerInfo[1]);
+        fileManager.saveUser(user);
+        users.add(user);
+        boolean loginNow = Console.getBooleanInput("Account Created, Would you like to Login? (yes/no)", "yes", "no", Console.TextColor.YELLOW);
+        if(loginNow == true){
+            loginToAccount();
+        }
     }
 
     private void bankApp(User user){
         int input = BankingUI.mainBank(user);
         switch (input){
-            case 1 -> run();
-            case 2 -> run();
-            case 3 -> run();
-            case 4 -> run();
+            case 1 -> withdraw(user);//withdraw
+            case 2 -> deposit(user);//deposit
+            case 3 -> accountOpen(user);//open account
+            case 4 -> accountClose(user);//close account
             case 5 -> run();
         }
+    }
+
+    private void withdraw(User user) {
+
+    }
+
+    private void deposit(User user) {
+
+    }
+
+    private void accountOpen(User user){
+        String accountName = BankingUI.openAccount();
+        for (int i = 0; i < user.getAccounts().size(); i++) {
+            if(accountName == user.getAccounts().get(i).getName()){
+                Console.writeLn("");
+            }
+        }
+    }
+
+    private void accountClose(User user) {
+
     }
 
     /**
@@ -49,7 +85,7 @@ public class BankingController
      */
     public void run() {
         do {
-            if(users.size() != fileManager.getAllFilesInFolder().size()) // add this
+            if(users.size() < fileManager.getAllFilesInFolder().size())
                 for (String userFolder : fileManager.getAllFilesInFolder()) {
                     users.add(fileManager.createUserFromUserFolder(userFolder));
                 }
