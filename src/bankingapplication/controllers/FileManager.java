@@ -111,13 +111,22 @@ public class FileManager
                 user = new User(loginInfo[0], loginInfo[1]);
             }
             // Check if file is savings account or checking account
+            BankAccount account;
             if (file.charAt(0) == 'C') {
                 String[] accountInfo = readData(path).split("\r\n");
-                accounts.add(new CheckingAccount(accountInfo[0], Double.parseDouble(accountInfo[1])));
+                account = new CheckingAccount(accountInfo[0], Double.parseDouble(accountInfo[1]));
+                for (int i = 2; i < accountInfo.length; i++) {
+                    account.addTransaction(accountInfo[i]);
+                }
+                accounts.add(account);
             }
             if (file.charAt(0) == 'S') {
                 String[] accountInfo = readData(path).split("\r\n");
-                accounts.add(new SavingsAccount(accountInfo[0], Double.parseDouble(accountInfo[1]), Integer.parseInt(accountInfo[3])));
+                account = new SavingsAccount(accountInfo[0], Double.parseDouble(accountInfo[1]), Integer.parseInt(accountInfo[3]));
+                for (int i = 5; i < accountInfo.length; i++) {
+                    account.addTransaction(accountInfo[i]);
+                }
+                accounts.add(account);
             }
         }
         for (BankAccount account : accounts) {
@@ -145,15 +154,15 @@ public class FileManager
                 content = account.getName() + "\n" +
                         account.getBalance() + "\n";
                 for (String transaction : account.getTransactions()) {
-                    content += transaction;
+                    content += transaction + "\n";
                 }
                 writeData(path + "Checking" + account.getName() + ".txt", content, false);
             } else {
                 content = account.getName() + "\n" + account.getBalance() + "\n" +
                         account.getInterestRate() + "\n" + account.getWithdrawals() + "\n" +
-                        account.isWithdrawalsReset();
+                        account.isWithdrawalsReset() + "\n";
                 for (String transaction : account.getTransactions()) {
-                    content += transaction;
+                    content += transaction + "\n";
                 }
                 writeData(path + "Savings" + account.getName() + ".txt", content, false);
             }

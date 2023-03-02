@@ -65,6 +65,22 @@ public class User
         accounts.remove(account);
     }
 
+    public void transfer(BankAccount sender, BankAccount receiver, double amount) {
+        if (sender == null || receiver == null) {
+            throw new IllegalArgumentException("Either BankAccount cannot be null");
+        }
+        if (amount > sender.getBalance()) {
+            throw new IllegalArgumentException("'amount' cannot be greater than sender's current balance");
+        }
+        if (amount < 1) {
+            throw new IllegalArgumentException("'amount' cannot be a negative number or zero");
+        }
+        sender.withdraw(amount, true);
+        receiver.deposit(amount, true);
+        sender.addTransaction("| - $" + amount + " | " + sender.getName() + " -> " + receiver.getName());
+        receiver.addTransaction("| + $" + amount + " | " + receiver.getName() + " <- " + sender.getName());
+    }
+
     /**
      * Generates a strong password that fulfils password requirements
      * @return Generated password

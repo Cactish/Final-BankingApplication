@@ -32,7 +32,7 @@ public class SavingsAccount extends BankAccount
                         "Interest Rate: " + getInterestRate() + "%\n" +
                         "Withdrawals Remaining: " + getWithdrawals();
         for (String transaction : getTransactions()) {
-            returnString += transaction;
+            returnString += "\n" + transaction;
         }
         returnString += "\n";
         return returnString;
