@@ -8,6 +8,7 @@ package bankingapplication.controllers;
 
 import bankingapplication.models.User;
 import bankingapplication.views.BankingUI;
+import edu.neumont.helpers.Console;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,33 @@ public class BankingController
 
     private void loginToAccount() {
         String[] loginInfo = BankingUI.displayLoginMenu();
+        for (int i = 0; i < users.size(); i++) {
+            if(users.get(i).getUserName().toLowerCase().equals(loginInfo[0]) && users.get(i).getPassword().equals(loginInfo[1])) {
+                bankApp(users.get(i));
+            }
+        }
+        Console.writeLn("Username or Password is Incorrect, Please Try Again", Console.TextColor.RED);
+        loginToAccount();
+    }
+    private void registerAccount() {
+        String[] registerInfo = BankingUI.displayRegisterMenu();
+        users.add(new User(registerInfo[0], registerInfo[1]));
+        fileManager.writeData(users.get(users.size()-1).getUserName(), users.get(users.size()-1).toString(), false);
+        boolean loginConfirm = Console.getBooleanInput("Account Created, Login?(yes, no)", "yes", "no", Console.TextColor.YELLOW);
+        if(loginConfirm == true){
+            loginToAccount();
+        }
     }
 
-    private void registerAccount() {
-        String[] registrationInfo = BankingUI.displayRegisterMenu();
-    }
-    private void bankApp(User account) {
-      // THE THINGY it is the thingy that does the thing when you do the thing, and it does the thing
+    private void bankApp(User user){
+        int input = BankingUI.mainBank(user);
+        switch (input){
+            case 1 -> mainMenu();
+            case 2 -> mainMenu();
+            case 3 -> mainMenu();
+            case 4 -> mainMenu();
+            case 5 -> run();
+        }
     }
 
     /**

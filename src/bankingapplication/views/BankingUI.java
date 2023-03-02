@@ -6,6 +6,7 @@
  */
 package bankingapplication.views;
 
+import bankingapplication.models.User;
 import edu.neumont.helpers.Console;
 
 public class BankingUI
@@ -28,5 +29,15 @@ public class BankingUI
         String username = Console.getStringInput("Create a username: ", false, Console.TextColor.YELLOW);
         String password = Console.getStringInput("Create a password: ", false, Console.TextColor.YELLOW);
         return new String[]{username, password};
+    }
+    public static int mainBank(User user){
+        Console.writeLn("Welcome " + user.getUserName(), Console.TextColor.YELLOW);
+        return Console.getIntInput("""
+                1. Checking
+                2. Savings
+                3. Transfer
+                4. Blah
+                5. Exit
+                """);
     }
 }
