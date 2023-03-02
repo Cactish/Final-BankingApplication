@@ -1,6 +1,10 @@
 package bankingapplication.models.accounts;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * <p>Simulated bank account</p>
+ * <p>abstract bank account class</p>
  * Has a name and balance and allows Users to view, deposit, withdraw, and transfer from the balance
  * @author Ryan Ratajczak
  */
@@ -8,6 +12,7 @@ public abstract class BankAccount
 {
     private String name;
     private double balance;
+    private List<String> transactions = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -28,8 +33,19 @@ public abstract class BankAccount
         this.balance = balance;
     }
 
+    public List<String> getTransactions() {
+        return transactions;
+    }
+
+    public void addTransaction(String transaction) {
+        if (transaction == null || transaction.isBlank()) {
+            throw new IllegalArgumentException("'transaction' message cannot be null or blank");
+        }
+        this.transactions.add(transaction);
+    }
+
     public String deposit(double amount) {
-        if (amount >= 0) {
+        if (amount <= 0) {
             throw new IllegalArgumentException("'amount' cannot be less than or equal to 0");
         }
         setBalance(getBalance() + amount);

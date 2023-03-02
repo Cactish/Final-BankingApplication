@@ -10,4 +10,11 @@ public class CheckingAccount extends BankAccount
         setName(name);
         deposit(deposit);
     }
+
+    @Override
+    public String toString() {
+        String returnString = "---Checking Account: " + getName();
+
+        return returnString;
+    }
 }

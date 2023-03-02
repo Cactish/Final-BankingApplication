@@ -8,49 +8,46 @@ package bankingapplication.controllers;
 
 import bankingapplication.models.User;
 import bankingapplication.views.BankingUI;
-import edu.neumont.helpers.Console;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class BankingController
 {
-    private FileManager fileManager = new FileManager();
-    private List<User> accounts = new ArrayList<>();
+    private final FileManager fileManager = new FileManager();
+    private final List<User> users = new ArrayList<>();
 
     private boolean currentlyRunning = true;
 
     private void loginToAccount() {
+        for (User user : users) {
+            System.out.println(user);
+        }
         String[] loginInfo = BankingUI.displayLoginMenu();
-
     }
-    
-    // region Create New Account
+
     private void registerAccount() {
 
     }
-    // endregion
-    private void bankApp(User account){
-      //THE THINGY
+    private void bankApp(User account) {
+      // THE THINGY
     }
 
     /**
      * Displays the main menu and prompts user for a response
      */
-    private void mainMenu() {
-        int response = BankingUI.displayMainMenu();
-        switch (response) {
-            case 1 -> loginToAccount();
-            case 2 -> registerAccount();
-            case 3 -> currentlyRunning = false;
-        }
-    }
-
     public void run() {
         do {
-            accounts = fileManager.readAccounts();
-            mainMenu();
+            for (String userFolder : fileManager.getAllFilesInFolder()) {
+                users.add(fileManager.createUserFromInformation(userFolder));
+            }
+            System.out.println(users.get(0));
+            int response = BankingUI.displayMainMenu();
+            switch (response) {
+                case 1 -> loginToAccount();
+                case 2 -> registerAccount();
+                case 3 -> currentlyRunning = false;
+            }
         } while (currentlyRunning);
     }
 }

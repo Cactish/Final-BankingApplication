@@ -11,6 +11,14 @@ public class SavingsAccount extends BankAccount
     private int withdrawals = 6;
     private boolean withdrawalsReset = false;
 
+    public SavingsAccount(String name, double deposit) {
+
+    }
+
+    public SavingsAccount(String name, double deposit, int withdrawals) {
+
+    }
+
     public double getInterestRate() {
         return interestRate;
     }
