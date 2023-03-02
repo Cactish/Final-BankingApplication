@@ -47,6 +47,10 @@ public class User
         this.password = password;
     }
 
+    public List<BankAccount> getAccounts() {
+        return this.accounts;
+    }
+
     public void openAccount(BankAccount account) {
         if (account == null) {
             throw new IllegalArgumentException("'account' cannot be null");
