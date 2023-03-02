@@ -7,9 +7,8 @@
 package bankingapplication.controllers;
 
 import bankingapplication.models.User;
-import bankingapplication.models.accounts.CheckingAccount;
-import bankingapplication.models.accounts.SavingsAccount;
 import bankingapplication.views.BankingUI;
+import edu.neumont.helpers.Console;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +22,26 @@ public class BankingController
 
     private void loginToAccount() {
         String[] loginInfo = BankingUI.displayLoginMenu();
+        for (int i = 0; i < users.size(); i++) {
+            if(users.get(i).getUserName().toLowerCase().equals(loginInfo[0]) && users.get(i).getPassword().equals(loginInfo[1])) {
+                bankApp(users.get(i));
+            }
+        }
+            Console.writeLn("Username or Password is Incorrect, Please Try Again", Console.TextColor.RED);
+    }
+    private void registerAccount() {
+
     }
 
-    private void registerAccount() {
-        String[] registrationInfo = BankingUI.displayRegisterMenu();
-    }
-    private void bankApp(User account) {
-      // THE THINGY it is the thingy that does the thing when you do the thing, and it does the thing
+    private void bankApp(User user){
+        int input = BankingUI.mainBank(user);
+        switch (input){
+            case 1 -> run();
+            case 2 -> run();
+            case 3 -> run();
+            case 4 -> run();
+            case 5 -> run();
+        }
     }
 
     /**
@@ -37,10 +49,10 @@ public class BankingController
      */
     public void run() {
         do {
-            for (String userFolder : fileManager.getAllFilesInFolder()) {
-                users.add(fileManager.createUserFromUserFolder(userFolder));
-            }
-            System.out.println(users);
+            if(users.size() != fileManager.getAllFilesInFolder().size()) // add this
+                for (String userFolder : fileManager.getAllFilesInFolder()) {
+                    users.add(fileManager.createUserFromUserFolder(userFolder));
+                }
             int response = BankingUI.displayMainMenu();
             switch (response) {
                 case 1 -> loginToAccount();
