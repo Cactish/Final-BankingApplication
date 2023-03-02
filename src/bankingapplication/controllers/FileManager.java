@@ -1,8 +1,8 @@
 /**
  * @author rratajczak
  * @createdOn 2/16/2023 at 10:22 AM
- * @projectName GameStuff
- * @packageName gamestuff.controllers;
+ * @projectName Final-BankingApplication
+ * @packageName bankingapplication.controllers;
  */
 package bankingapplication.controllers;
 
@@ -20,26 +20,11 @@ public class FileManager
 {
     public final static String ROOT_FOLDER = "C:\\Accounts\\";
 
-    private String getFullFilePath(String fileName) {
-        return ROOT_FOLDER + fileName;
-    }
-
     private void createRootFolder() {
         File rootFolder = new File(ROOT_FOLDER);
         if (!rootFolder.exists()) {
             try {
                 rootFolder.mkdir();
-            } catch (SecurityException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-    }
-
-    public void createAccountFolder(String accountName) {
-        File accountFolder = new File(ROOT_FOLDER + accountName);
-        if(!accountFolder.exists()) {
-            try {
-                accountFolder.mkdir();
             } catch (SecurityException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -63,6 +48,11 @@ public class FileManager
         }
     }
 
+    /**
+     * Reads file from given path
+     * @param path Path to the file
+     * @return String of the content in the file
+     */
     public String readData(String path) {
         BufferedReader read = null;
         StringBuilder content = new StringBuilder();
@@ -102,7 +92,7 @@ public class FileManager
      * Reads all the files in a User's folder and creates a new User object
      * @return The User created with the information read
      */
-    public User createUserFromInformation(String userName) {
+    public User createUserFromUserFolder(String userName) {
         User user = null;
         List<BankAccount> accounts = new ArrayList<>();
         if (!getAllFilesInFolder().contains(userName)) {
@@ -135,5 +125,17 @@ public class FileManager
             user.openAccount(account);
         }
         return user;
+    }
+
+    public void saveUser(User user) {
+        File userFolder = new File(ROOT_FOLDER + user.getUserName());
+        String path = userFolder.getPath() + "\\";
+        if(!userFolder.exists()) {
+            try {
+                userFolder.mkdir();
+            } catch (SecurityException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 }

@@ -21,8 +21,12 @@ public class SavingsAccount extends BankAccount
         setWithdrawals(MAX_WITHDRAWALS);
     }
 
-    public SavingsAccount(String name, double deposit, int withdrawals) {
-
+    // This one is used exclusively when reading the SavingsAccount from the file
+    public SavingsAccount(String name, double balance, int withdrawals) {
+        setName(name);
+        setBalance(balance);
+        setInterestRate(INTEREST_RATE);
+        setWithdrawals(withdrawals);
     }
 
     public double getInterestRate() {

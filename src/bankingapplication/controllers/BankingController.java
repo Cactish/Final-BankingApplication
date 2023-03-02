@@ -20,17 +20,14 @@ public class BankingController
     private boolean currentlyRunning = true;
 
     private void loginToAccount() {
-        for (User user : users) {
-            System.out.println(user);
-        }
         String[] loginInfo = BankingUI.displayLoginMenu();
     }
 
     private void registerAccount() {
-
+        String[] registrationInfo = BankingUI.displayRegisterMenu();
     }
     private void bankApp(User account) {
-      // THE THINGY
+      // THE THINGY it is the thingy that does the thing when you do the thing, and it does the thing
     }
 
     /**
@@ -39,9 +36,8 @@ public class BankingController
     public void run() {
         do {
             for (String userFolder : fileManager.getAllFilesInFolder()) {
-                users.add(fileManager.createUserFromInformation(userFolder));
+                users.add(fileManager.createUserFromUserFolder(userFolder));
             }
-            System.out.println(users.get(0));
             int response = BankingUI.displayMainMenu();
             switch (response) {
                 case 1 -> loginToAccount();
