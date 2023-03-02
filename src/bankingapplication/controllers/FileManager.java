@@ -1,12 +1,15 @@
 /**
  * @author rratajczak
  * @createdOn 2/16/2023 at 10:22 AM
- * @projectName GameStuff
- * @packageName gamestuff.controllers;
+ * @projectName Final-BankingApplication
+ * @packageName bankingapplication.controllers;
  */
 package bankingapplication.controllers;
 
 import bankingapplication.models.User;
+import bankingapplication.models.accounts.BankAccount;
+import bankingapplication.models.accounts.CheckingAccount;
+import bankingapplication.models.accounts.SavingsAccount;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,10 +19,6 @@ import java.util.List;
 public class FileManager
 {
     public final static String ROOT_FOLDER = "C:\\Accounts\\";
-
-    private String getFullFilePath(String fileName) {
-        return ROOT_FOLDER + fileName + ".txt";
-    }
 
     private void createRootFolder() {
         File rootFolder = new File(ROOT_FOLDER);
@@ -32,22 +31,11 @@ public class FileManager
         }
     }
 
-    public void createAccountFolder(String accountName) {
-        File accountFolder = new File(ROOT_FOLDER + accountName);
-        if(!accountFolder.exists()) {
-            try {
-                accountFolder.mkdir();
-            } catch (SecurityException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-    }
-
-    public void writeData(String fileName, String contents, boolean append) {
+    public void writeData(String path, String contents, boolean append) {
         createRootFolder();
         BufferedWriter write = null;
         try {
-            write = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getFullFilePath(fileName), append)));
+            write = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, append)));
             write.write(contents);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -60,13 +48,18 @@ public class FileManager
         }
     }
 
-    public String readData(String fileName) {
+    /**
+     * Reads file from given path
+     * @param path Path to the file
+     * @return String of the content in the file
+     */
+    public String readData(String path) {
         BufferedReader read = null;
-        String content = "";
+        StringBuilder content = new StringBuilder();
         try {
-            read = new BufferedReader(new InputStreamReader(new FileInputStream(getFullFilePath(fileName))));
+            read = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
             while (read.ready()) {
-                content += read.readLine() + "\r\n";
+                content.append(read.readLine()).append("\r\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,25 +74,68 @@ public class FileManager
     }
 
     /**
-     * Reads all the files in "C:/accounts" and creates a new User object that is then added to accounts array
+     * Reads through 'ROOT_FOLDER' and returns a List of the names
+     * @return String List of file names
      */
-    public List<User> readAccounts() {
-        List<User> accounts = new ArrayList<>();
-        for (String fileName : getAllFilesInFolder()) {
-            accounts.add(new User(fileName, readData(fileName)));
-        }
-        return accounts;
-    }
-
     public List<String> getAllFilesInFolder() {
         createRootFolder();
         File rootFolder = new File(ROOT_FOLDER);
         List<String> files = Arrays.asList(rootFolder.list());
         for (int i = 0; i < files.size(); i++) {
             String fileName = files.get(i);
-
             files.set(i, fileName);
         }
         return files;
+    }
+
+    /**
+     * Reads all the files in a User's folder and creates a new User object
+     * @return The User created with the information read
+     */
+    public User createUserFromUserFolder(String userName) {
+        User user = null;
+        List<BankAccount> accounts = new ArrayList<>();
+        if (!getAllFilesInFolder().contains(userName)) {
+            System.out.println("user not found");
+            return null;
+        }
+        File userFolder = new File(ROOT_FOLDER + userName + "\\");
+        String[] files = userFolder.list();
+
+        // Iterate through files in the User's folder
+        assert files != null;
+        for (String file : files) {
+            String path = userFolder + "\\" + file;
+            if (file.equals("Login.txt")) {
+                String[] loginInfo = readData(path).split("\r\n");
+                user = new User(loginInfo[0], loginInfo[1]);
+            }
+            // Check if file is savings account or checking account
+            if (file.charAt(0) == 'C') {
+                String[] accountInfo = readData(path).split("\r\n");
+                accounts.add(new CheckingAccount(accountInfo[0], Double.parseDouble(accountInfo[1])));
+            }
+            if (file.charAt(0) == 'S') {
+                String[] accountInfo = readData(path).split("\r\n");
+                accounts.add(new SavingsAccount(accountInfo[0], Double.parseDouble(accountInfo[1])));
+            }
+        }
+        for (BankAccount account : accounts) {
+            assert user != null;
+            user.openAccount(account);
+        }
+        return user;
+    }
+
+    public void saveUser(User user) {
+        File userFolder = new File(ROOT_FOLDER + user.getUserName());
+        String path = userFolder.getPath() + "\\";
+        if(!userFolder.exists()) {
+            try {
+                userFolder.mkdir();
+            } catch (SecurityException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 }

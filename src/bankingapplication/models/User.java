@@ -8,6 +8,7 @@ package bankingapplication.models;
 
 import bankingapplication.models.accounts.BankAccount;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -17,11 +18,9 @@ public class User
 
     private String userName;
     private String password;
-    private List<BankAccount> accounts;
+    private List<BankAccount> accounts = new ArrayList<>();
 
-    private Random random = new Random();
-
-    public User(String userName, String password){
+    public User(String userName, String password) {
         setUserName(userName);
         setPassword(password);
     }
@@ -48,33 +47,40 @@ public class User
         this.password = password;
     }
 
-    public void createAccount() {
+    public void openAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("'account' cannot be null");
+        }
+        this.accounts.add(account);
+    }
 
+    public void closeAccount(BankAccount account) {
+        if (account == null) {
+            throw new IllegalArgumentException("'account' cannot be null");
+        }
+        accounts.remove(account);
     }
 
     /**
      * Generates a strong password that fulfils password requirements
      * @return Generated password
      */
-    public static String getStrongPassword(int length, boolean includeSymbols) {
+    public static String getStrongPassword() {
         Random random = new Random();
-        if (length == 0) {
-            throw new IllegalArgumentException("Length cannot be 0");
-        }
-
-        String charsToChooseFrom = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        if (includeSymbols) {
-            charsToChooseFrom += "!#$%&<>@";
-        }
-
-        StringBuilder password = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
+        String charsToChooseFrom = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&";
+        StringBuilder password = new StringBuilder(15);
+        for (int i = 0; i < 15; i++) {
             password.append(charsToChooseFrom.charAt(random.nextInt(charsToChooseFrom.length())));
         }
         return password.toString();
     }
 
-    public String toString(){
-        return userName + "\r\n" + password;
+    public String toString() {
+        String returnString = "";
+        returnString += userName + "\n" + password + "\n";
+        for (BankAccount account : accounts) {
+            returnString += account.toString();
+        }
+        return returnString;
     }
 }
