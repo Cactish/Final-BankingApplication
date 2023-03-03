@@ -136,6 +136,10 @@ public class FileManager
         return user;
     }
 
+    /**
+     * Parses User object and writes it to the appropriate files
+     * @param user The User object to be written
+     */
     public void saveUser(User user) {
         File userFolder = new File(ROOT_FOLDER + user.getUserName());
         String path = userFolder.getPath() + "\\";
