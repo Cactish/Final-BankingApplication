@@ -5,6 +5,6 @@ import bankingapplication.controllers.BankingController;
 public class Main
 {
     public static void main(String[] args) {
-        new BankingController().run();
+        new BankingController().runLoginMenu();
     }
 }

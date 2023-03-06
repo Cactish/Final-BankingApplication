@@ -3,7 +3,6 @@ package bankingapplication.models.accounts;
  * <p>Extends BankAccount</p>
  * unlike a checking account, savings accounts accrue interest and have a maximum amount of with
  * @see BankAccount
- * @author Ryan Ratajczak
  */
 public class SavingsAccount extends BankAccount
 {

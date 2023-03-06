@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class User
 {
-    public final int MIN_PASSWORD = 10;
+    public static final int MIN_PASSWORD = 10;
 
     private String userName;
     private String password;

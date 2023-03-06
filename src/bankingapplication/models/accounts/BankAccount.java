@@ -7,7 +7,6 @@ import java.util.List;
 /**
  * <p>abstract bank account class</p>
  * Has a name and balance and allows Users to view, deposit, withdraw, and transfer from the balance
- * @author Ryan Ratajczak
  */
 public abstract class BankAccount
 {
@@ -16,7 +15,7 @@ public abstract class BankAccount
     private double interestRate;
     private int withdrawals = 6;
     private boolean withdrawalsReset = false;
-    private List<String> transactions = new ArrayList<>();
+    private final List<String> transactions = new ArrayList<>();
 
     public String getName() {
         return name;
