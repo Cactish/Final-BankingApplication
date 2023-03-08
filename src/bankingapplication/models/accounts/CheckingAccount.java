@@ -1,4 +1,11 @@
+/**
+ * @author rratajczak
+ * @createdOn 2/27/2023 at 11:13 AM
+ * @projectName Final-BankingApplication
+ * @packageName bankingapplication.models.accounts;
+ */
 package bankingapplication.models.accounts;
+
 /**
  * <p>Extends BankAccount</p>
  * Simple checking account that doesn't differ from BankAccount
@@ -13,12 +20,12 @@ public class CheckingAccount extends BankAccount
 
     @Override
     public String toString() {
-        String returnString = "\n---Checking Account: " + getName() + "---\n";
-        returnString += "Balance: $" + getBalance();
-        for (String transaction : getTransactions()) {
-            returnString += transaction;
+        StringBuilder returnString = new StringBuilder("\n---Checking Account: " + getName() + "---\n");
+        returnString.append("Balance: $").append(getBalance()).append("\n\n---Transaction History---");
+        for (int i = getTransactions().size() - 1; i >= 0; i--) {
+            returnString.append("\n").append(getTransactions().get(i));
         }
-        returnString += "\n";
-        return returnString;
+        returnString.append("\n");
+        return returnString.toString();
     }
 }

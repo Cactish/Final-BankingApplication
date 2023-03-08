@@ -20,6 +20,9 @@ public class FileManager
 {
     public final static String ROOT_FOLDER = "C:\\BankingApplication\\";
 
+    /**
+     * Creates a root folder for the file manager if it doesn't already exist
+     */
     private void createRootFolder() {
         File rootFolder = new File(ROOT_FOLDER);
         if (!rootFolder.exists()) {
@@ -31,6 +34,12 @@ public class FileManager
         }
     }
 
+    /**
+     * Writes String data to the path given
+     * @param path path of the file
+     * @param contents String content to be written out
+     * @param append if true, appends contents to the end of the file instead of overwriting
+     */
     public void writeData(String path, String contents, boolean append) {
         createRootFolder();
         BufferedWriter write = null;
@@ -71,6 +80,16 @@ public class FileManager
             }
         }
         return content.toString();
+    }
+
+    /**
+     * Deletes the file at the provided path
+     * @param localPath the local path to the file
+     * @return returns true if the file successfully deleted
+     */
+    public boolean deleteFile(String localPath) {
+        File fileToBeDeleted = new File(ROOT_FOLDER + localPath);
+        return fileToBeDeleted.delete();
     }
 
     /**
@@ -122,8 +141,8 @@ public class FileManager
             }
             if (file.charAt(0) == 'S') {
                 String[] accountInfo = readData(path).split("\r\n");
-                account = new SavingsAccount(accountInfo[0], Double.parseDouble(accountInfo[1]), Integer.parseInt(accountInfo[3]));
-                for (int i = 5; i < accountInfo.length; i++) {
+                account = new SavingsAccount(accountInfo);
+                for (int i = 8; i < accountInfo.length; i++) {
                     account.addTransaction(accountInfo[i]);
                 }
                 accounts.add(account);
@@ -163,8 +182,9 @@ public class FileManager
                 writeData(path + "Checking" + account.getName() + ".txt", content, false);
             } else {
                 content = account.getName() + "\n" + account.getBalance() + "\n" +
-                        account.getInterestRate() + "\n" + account.getWithdrawals() + "\n" +
-                        account.isWithdrawalsReset() + "\n";
+                        account.getInterestRate() + "\n" + account.getNextPayday() + "\n" +
+                        account.isInterestPaid() + "\n" + account.getWithdrawals() + "\n" +
+                        account.getNextWithdrawalsReset() + "\n" + account.isWithdrawalsReset() + "\n";
                 for (String transaction : account.getTransactions()) {
                     content += transaction + "\n";
                 }

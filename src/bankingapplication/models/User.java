@@ -8,17 +8,21 @@ package bankingapplication.models;
 
 import bankingapplication.models.accounts.BankAccount;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Class for storing information about a user
+ */
 public class User
 {
     public static final int MIN_PASSWORD = 10;
 
     private String userName;
     private String password;
-    private List<BankAccount> accounts = new ArrayList<>();
+    private final List<BankAccount> accounts = new ArrayList<>();
 
     public User(String userName, String password) {
         setUserName(userName);
@@ -65,6 +69,12 @@ public class User
         accounts.remove(account);
     }
 
+    /**
+     * Used to transfer money from a sender to a receiver
+     * @param sender the BankAccount sending money
+     * @param receiver the BankAccount receiving the money
+     * @param amount the amount to transfer
+     */
     public void transfer(BankAccount sender, BankAccount receiver, double amount) {
         if (sender == null || receiver == null) {
             throw new IllegalArgumentException("Either BankAccount cannot be null");
@@ -77,8 +87,8 @@ public class User
         }
         sender.withdraw(amount, true);
         receiver.deposit(amount, true);
-        sender.addTransaction("| - $" + amount + " | " + sender.getName() + " -> " + receiver.getName());
-        receiver.addTransaction("| + $" + amount + " | " + receiver.getName() + " <- " + sender.getName());
+        sender.addTransaction("| - $" + amount + " | " + sender.getName() + " -> " + receiver.getName() + " | " + LocalDate.now() + " |");
+        receiver.addTransaction("| + $" + amount + " | " + receiver.getName() + " <- " + sender.getName() + " | " + LocalDate.now() + " |");
     }
 
     /**
@@ -96,11 +106,11 @@ public class User
     }
 
     public String toString() {
-        String returnString = "";
-        returnString += userName + "\n" + password + "\n";
+        StringBuilder returnString = new StringBuilder();
+        returnString.append(userName).append("\n").append(password).append("\n");
         for (BankAccount account : accounts) {
-            returnString += account.toString();
+            returnString.append(account.toString());
         }
-        return returnString;
+        return returnString.toString();
     }
 }
