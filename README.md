@@ -11,4 +11,4 @@ by: Ryan Ratajczak and ZK (Leigh Virrey)
 - Savings accounts earn interest, but have limited withdrawals
 
 # UML
-![[FinalBankingUML.png]]
+![the uml doesn't want to load...](https://github.com/Cactish/Final-BankingApplication/blob/master/FinalBankingUML.png?raw=true)
